@@ -5,8 +5,11 @@ sudo apt-get dist-upgrade -y
 sudo apt-get autoremove -y
 sudo apt-get autoclean -y
 
-# Install SSH and FTP
+# Install SSH
 sudo apt-get install -y openssh-server
+
+# Install JDK
+sudo apt-get install default-jdk
 
 # After VM has been prepared, export it
 vboxmanage export ubuntu16 -o ubuntu16.ova

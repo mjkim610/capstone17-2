@@ -4,7 +4,7 @@ cd ~/VirtualBox\ VMs/
 # Set variables
 VM_NAME="ubuntu16"
 VM_HD_PATH="ubuntu16.vdi" # The path to VM hard disk (to be created).
-HD_SIZE=5000
+HD_SIZE=10000
 RAM_SIZE=4096
 VRAM_SIZE=128
 VM_ISO_PATH=~/Documents/dev/vm/iso/ubuntu-16.04.3-server-amd64.iso # Change path as needed
