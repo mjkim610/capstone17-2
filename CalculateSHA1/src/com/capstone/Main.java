@@ -42,7 +42,7 @@ public class Main {
         long tsLong = System.nanoTime();
         String HashValue = "error";
 
-        for (Integer i = 0; i<20000; i++) {
+        for (Integer i = 0; i<5000000; i++) {
             HashValue = computeSHAHash(args[0]);
         }
         Long ttLong = System.nanoTime() - tsLong;
