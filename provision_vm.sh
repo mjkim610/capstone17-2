@@ -7,7 +7,7 @@ VM_HD_PATH="ubuntu16.vdi" # The path to VM hard disk (to be created).
 HD_SIZE=10000
 RAM_SIZE=4096
 VRAM_SIZE=128
-VM_ISO_PATH=~/Documents/dev/vm/iso/ubuntu-16.04.3-server-amd64.iso # Change path as needed
+VM_ISO_PATH=~/Dev/vms/ubuntu-16.04.3-server-amd64.iso # Change path as needed
 # SHARED_PATH=~ # Share home directory with the VM
 
 # Create and modify VM spec
