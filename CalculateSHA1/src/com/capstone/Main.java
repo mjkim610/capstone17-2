@@ -5,6 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.UnsupportedEncodingException;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
 
@@ -51,6 +54,13 @@ public class Main {
         String score =  roundnumber.toString();
         String output = "SHA-1 hash: " + " " + HashValue + "\n Time Taken: " + tt + "\n Score: " + score;
         System.out.println(output);
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("CalculateSHA1.txt"))) {
+            bw.write(tt);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
