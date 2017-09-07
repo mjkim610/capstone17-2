@@ -1,3 +1,7 @@
+# Install guest additions
+sudo apt-get install virtualbox-guest-dkms
+sudo apt-get install git
+
 # Change directory
 cd ~/VirtualBox\ VMs/
 
@@ -7,7 +11,7 @@ VM_HD_PATH="ubuntu16.vdi" # The path to VM hard disk (to be created).
 HD_SIZE=10000
 RAM_SIZE=4096
 VRAM_SIZE=128
-VM_ISO_PATH=~/Dev/vms/ubuntu-16.04.3-server-amd64.iso # Change path as needed
+VM_ISO_PATH=~/ubuntu-16.04.3-server-amd64.iso # Change path as needed
 # SHARED_PATH=~ # Share home directory with the VM
 
 # Create and modify VM spec
@@ -23,6 +27,9 @@ vboxmanage modifyvm $VM_NAME --nic1 nat
 vboxmanage modifyvm $VM_NAME --natpf1 "guestssh,tcp,,2222,,22"
 vboxmanage modifyvm $VM_NAME --natdnshostresolver1 on
 # vboxmanage sharedfolder add $VM_NAME --name shared --hostpath $SHARED_PATH --automount
+
+# Go through Ubuntu installation in a GUI environment, because installing headless is impossible in our case
+vboxmanage startvm $VM_NAME
 
 # After initial setup and installation of openssh-server via GUI, start vm with command
 vboxmanage startvm $VM_NAME --type headless
