@@ -7,13 +7,14 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.ChannelExec;
 
-
 public class Main {
     public static void main(String[] args) throws Exception {
         String username = "capstone";
         String password = "sojong1234";
         String hostname = "localhost";
         int port = 2222;
+
+        String command = "cd capstone17-2/CalculateSHA1/src/; javac com/capstone/Main.java; java -classpath . com.capstone.Main \"The quick brown fox jumps over the lazy dog.\"";
 
         JSch jsch = new JSch();
         Session session = jsch.getSession(username, hostname, port);
@@ -36,7 +37,7 @@ public class Main {
         String line;
 
         // Execute command
-        channelssh.setCommand("cd capstone17-2/CalculateSHA1/src/; javac com/capstone/Main.java; java -classpath . com.capstone.Main \"The quick brown fox jumps over the lazy dog.\"");
+        channelssh.setCommand(command);
         channelssh.connect();
         while ((line = bufferedReader.readLine()) != null) {
             stringBuilder.append(line);

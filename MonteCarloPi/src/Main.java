@@ -1,7 +1,6 @@
 import java.lang.Math;
 
 public class Main {
-
     public static double estimatePi(int r, int n) {
         double x;
         double y;

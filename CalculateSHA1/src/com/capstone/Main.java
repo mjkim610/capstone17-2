@@ -5,18 +5,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.UnsupportedEncodingException;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class Main {
 
-    public static String computeSHAHash(String password)
-    {
-
+    private static String computeSHAHash(String password) {
         MessageDigest mdSha1 = null;
-        try
-        {
+        try {
             mdSha1 = MessageDigest.getInstance("SHA-1");
         } catch (NoSuchAlgorithmException e1) {
             System.out.println("Error initializing SHA1");
@@ -28,39 +21,28 @@ public class Main {
         }
         byte[] data = mdSha1.digest();
         StringBuffer sb = new StringBuffer();
-        String hex=null;
+        String hex;
 
         hex = Base64.getEncoder().encodeToString(data);
 
         sb.append(hex);
         return sb.toString();
-
     }
 
-    public static void begin(String[] args) {
+    private static void begin(String[] args) {
         for (int i=0; i<args.length; i++) {
             System.out.println(args[i]);
         }
 
-        long tsLong = System.nanoTime();
+        long startTime = System.nanoTime();
         String HashValue = "error";
 
-        for (Integer i = 0; i<5000000; i++) {
+        for (Integer i = 0; i<50000; i++) {
             HashValue = computeSHAHash(args[0]);
         }
-        Long ttLong = System.nanoTime() - tsLong;
-        String tt = ttLong.toString();
-        Integer roundnumber = Math.round(ttLong / 100000000);
-        String score =  roundnumber.toString();
-        String output = "SHA-1 hash: " + " " + HashValue + "\n Time Taken: " + tt + "\n Score: " + score;
+        long duration = System.nanoTime() - startTime;
+        String output = "SHA-1 hash: " + HashValue + "\nTime Taken: " + duration;
         System.out.println(output);
-
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("CalculateSHA1.txt"))) {
-            bw.write(tt);
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void main(String[] args) {
