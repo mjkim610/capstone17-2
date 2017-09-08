@@ -9,7 +9,7 @@ import com.jcraft.jsch.ChannelExec;
 
 
 public class Main {
-    public static String main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         String username = "capstone";
         String password = "sojong1234";
         String hostname = "localhost";
@@ -36,7 +36,7 @@ public class Main {
         String line;
 
         // Execute command
-        channelssh.setCommand("cd capstone17-2/CalculateSHA1/src/; javac com/capstone/Main.java; java -classpath . com.capstone.Main \"The quick brown fox jumps over the lazy dog.\"");
+        channelssh.setCommand("cd capstone17-2/CalculateSHA1/src/; javac -classpath ../libs/jsch-0.1.54.jar Main.java; java -classpath . Main \"The quick brown fox jumps over the lazy dog.\"");
         channelssh.connect();
         while ((line = bufferedReader.readLine()) != null) {
             stringBuilder.append(line);
@@ -44,7 +44,6 @@ public class Main {
         }
         channelssh.disconnect();
 
-        return stringBuilder.toString();
-
+        System.out.println(stringBuilder.toString());
     }
 }
