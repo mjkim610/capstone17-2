@@ -36,7 +36,7 @@ public class Main {
         String line;
 
         // Execute command
-        channelssh.setCommand("cd capstone17-2/CalculateSHA1/src/; javac -classpath ../libs/jsch-0.1.54.jar Main.java; java -classpath . Main \"The quick brown fox jumps over the lazy dog.\"");
+        channelssh.setCommand("cd capstone17-2/CalculateSHA1/src/; javac com/capstone/Main.java; java -classpath . com.capstone.Main \"The quick brown fox jumps over the lazy dog.\"");
         channelssh.connect();
         while ((line = bufferedReader.readLine()) != null) {
             stringBuilder.append(line);
@@ -45,5 +45,8 @@ public class Main {
         channelssh.disconnect();
 
         System.out.println(stringBuilder.toString());
+        if (channelssh.isClosed()) {
+            System.exit(0);
+        }
     }
 }
