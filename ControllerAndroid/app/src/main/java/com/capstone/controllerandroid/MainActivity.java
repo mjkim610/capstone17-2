@@ -42,9 +42,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Void... params) {
+
+            // FILL IN SERVER INFO
+            String username = "username";
+            String password = "password";
+            String hostname = "hostname";
+            int port = 22;
+
             Log.d("OUTPUT", "inside doInBackground...");
             try {
-                output = executeRemoteCommand("username", "password", "hostname", 22); // FILL IN WITH SERVER INFO
+                if (username == "username") {
+                    Log.d("OUTPUT", "FILL IN SERVER INFO...");
+                }
+                output = executeRemoteCommand(username, password, hostname, port);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -52,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String output) {
+            Log.d("OUTPUT", "inside onPostExecute...");
             result = (TextView) findViewById(R.id.textView2);
             result.setText(output);
         }
@@ -80,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             String line;
 
             // Execute command
-            channelssh.setCommand("cd capstone17-2/CalculateSHA1/src/; javac com/capstone/Main.java; java -classpath . com.capstone.Main \"The quick brown fox jumps over the lazy dog.\"");
+            channelssh.setCommand("cd capstone17-2/ControllerCloudlet/src/; javac -classpath ../libs/jsch-0.1.54.jar Main.java; java -classpath .:../libs/jsch-0.1.54.jar Main \"The quick brown fox jumps over the lazy dog.\"");
             channelssh.connect();
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
