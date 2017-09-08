@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             String line;
 
             // Execute command
-            channelssh.setCommand("ls");
+            channelssh.setCommand("cd capstone17-2/CalculateSHA1/src/; javac com/capstone/Main.java; java -classpath . com.capstone.Main \"The quick brown fox jumps over the lazy dog.\"");
             channelssh.connect();
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
