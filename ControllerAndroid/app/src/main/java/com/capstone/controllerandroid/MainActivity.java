@@ -17,8 +17,10 @@ import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    private TextView time;
     private TextView result;
     private String output = "";
+    private long startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +32,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBeginClick(View view) {
+        startTime = System.nanoTime();
         new PostTask().execute();
     }
 
     private class PostTask extends AsyncTask<Void, Void, String> {
+        private String command = "cd capstone17-2/ControllerCloudlet/src/; javac -classpath ../libs/jsch-0.1.54.jar Main.java; java -classpath .:../libs/jsch-0.1.54.jar Main \"The quick brown fox jumps over the lazy dog.\"";
 
         protected void onPreExecute() {
+            time = (TextView) findViewById(R.id.textView1);
             result = (TextView) findViewById(R.id.textView2);
+            time.setText("WORKING NOW...");
             result.setText("WORKING NOW...");
         }
 
@@ -51,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("OUTPUT", "inside doInBackground...");
             try {
-                if (username == "username") {
+                if (username.equals("username")) {
                     Log.d("OUTPUT", "FILL IN SERVER INFO...");
                 }
                 output = executeRemoteCommand(username, password, hostname, port);
@@ -65,9 +71,13 @@ public class MainActivity extends AppCompatActivity {
             Log.d("OUTPUT", "inside onPostExecute...");
             result = (TextView) findViewById(R.id.textView2);
             result.setText(output);
+
+            long duration = System.nanoTime() - startTime;
+            time = (TextView) findViewById(R.id.textView1);
+            time.setText(Long.toString(duration));
         }
 
-        public String executeRemoteCommand(String username, String password, String hostname, int port) throws Exception {
+        private String executeRemoteCommand(String username, String password, String hostname, int port) throws Exception {
             Log.d("OUTPUT", "inside executeRemoteCommand...");
 
             JSch jsch = new JSch();
@@ -91,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             String line;
 
             // Execute command
-            channelssh.setCommand("cd capstone17-2/ControllerCloudlet/src/; javac -classpath ../libs/jsch-0.1.54.jar Main.java; java -classpath .:../libs/jsch-0.1.54.jar Main \"The quick brown fox jumps over the lazy dog.\"");
+            channelssh.setCommand(command);
             channelssh.connect();
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);

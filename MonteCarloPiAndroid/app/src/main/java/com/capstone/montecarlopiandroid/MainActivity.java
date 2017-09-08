@@ -3,14 +3,13 @@ package com.capstone.montecarlopiandroid;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.lang.Math;
 
 public class MainActivity extends AppCompatActivity {
+    private TextView time;
     private TextView result;
-    private Button compute;
 
     public static double estimatePi(int r, int n) {
         double x;
@@ -34,11 +33,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        compute = (Button) findViewById(R.id.btn1);
+        time = (TextView) findViewById(R.id.textView1);
         result = (TextView) findViewById(R.id.textView2);
     }
 
     public void onBeginClick(View view) {
+        time.setText("WORKING...");
+        result.setText("WORKING...");
+
         int radius = 10;
         String output = "";
 
@@ -53,9 +55,7 @@ public class MainActivity extends AppCompatActivity {
         output = output + "Pi Estimate: " + piEstimate + "\n";
 
         long duration = System.nanoTime() - startTime;
-        output = output + "Duration: " + duration + "\n";
-
+        time.setText(Long.toString(duration));
         result.setText(output);
-
     }
 }
