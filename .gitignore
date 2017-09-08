@@ -21,6 +21,7 @@ resources/secrets.txt
 
 # Package Files #
 *.jar
+!*jsch-0.1.54.jar
 *.war
 *.ear
 *.zip
