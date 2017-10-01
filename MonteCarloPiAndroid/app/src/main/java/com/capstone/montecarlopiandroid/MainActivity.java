@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.lang.Math;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private TextView time;
@@ -41,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         time.setText("WORKING...");
         result.setText("WORKING...");
 
-        int radius = 10;
+        Random random = new Random();
+        int radius = random.nextInt((int)Math.sqrt(Integer.MAX_VALUE));
         String output = "";
 
         output = output + "Program argument (r): ";

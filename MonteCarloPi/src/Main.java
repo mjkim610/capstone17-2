@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.Random;
 
 public class Main {
     public static double estimatePi(int r, int n) {
@@ -21,12 +22,8 @@ public class Main {
     public static void main(String[] args) {
         String output = "";
 
-        output = output + "Program argument (r): ";
-        for (int i=0; i<args.length; i++) {
-            output = output + args[i] + "\n";
-        }
-
-        int r = Integer.parseInt(args[0]);
+        Random random = new Random();
+        int r = random.nextInt((int)Math.sqrt(Integer.MAX_VALUE));
         int n = 500000;
 
         long startTime = System.nanoTime();
@@ -35,7 +32,7 @@ public class Main {
         output = output + "Pi Estimate: " + piEstimate + "\n";
 
         long duration = System.nanoTime() - startTime;
-        output = output + "Duration: " + duration + "\n";
+        output = output + "Duration: " + duration;
 
         System.out.println(output);
     }
