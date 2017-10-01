@@ -1,11 +1,21 @@
-package com.capstone;
-
+import java.util.Random;
 import java.util.Base64;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.UnsupportedEncodingException;
 
 public class Main {
+    private static final String CHARSLIST = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    private static String generateRandomString(String charList) {
+        Random random = new Random();
+        StringBuilder res = new StringBuilder();
+        for (int i=0; i<100; i++) {
+            int randomIndex = random.nextInt(charList.length());
+            res.append(charList.charAt(randomIndex));
+        }
+        return res.toString();
+    }
 
     private static String computeSHAHash(String password) {
         MessageDigest mdSha1 = null;
@@ -30,18 +40,15 @@ public class Main {
     }
 
     private static void begin(String[] args) {
-        for (int i=0; i<args.length; i++) {
-            System.out.println(args[i]);
-        }
 
         long startTime = System.nanoTime();
-        String HashValue = "error";
+        String hashValue = "error";
 
         for (Integer i = 0; i<50000; i++) {
-            HashValue = computeSHAHash(args[0]);
+            hashValue = computeSHAHash(generateRandomString(CHARSLIST));
         }
         long duration = System.nanoTime() - startTime;
-        String output = "SHA-1 hash: " + HashValue + "\nTime Taken: " + duration;
+        String output = "SHA-1 hash: " + hashValue + "\nTime Taken: " + duration;
         System.out.println(output);
     }
 
