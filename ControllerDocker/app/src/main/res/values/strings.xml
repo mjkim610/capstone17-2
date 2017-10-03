@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ControllerDocker</string>
+    <string-array name="simulationArray">
+        <item>CalculateSHA1</item>
+        <item>EstimatePi</item>
+    </string-array>
 </resources>

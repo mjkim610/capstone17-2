@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.ChannelExec;
@@ -17,13 +18,19 @@ import com.jcraft.jsch.ChannelExec;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private TextView time;
     private TextView result;
     private EditText repetitionCount;
+    private Spinner spinner;
+
     private long startTime;
 
+    private String simulation = "CalculateSHA1";
     private String command;
     private String output = "";
 
@@ -35,14 +42,29 @@ public class MainActivity extends AppCompatActivity {
         repetitionCount = (EditText)findViewById(R.id.number1);
 
         time = (TextView) findViewById(R.id.textView1);
+
         result = (TextView) findViewById(R.id.textView2);
         result.setText("RESULTS ARE SHOWN HERE");
+
+        spinner = (Spinner) findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.simulationArray, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        simulation = parent.getItemAtPosition(pos).toString();
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 
     public void onBeginClick(View view) {
         if (repetitionCount.getText().toString().trim().isEmpty()) {
             result.setText("Please specify the number of repetition");
         } else {
+            // MUST CHECK THAT INPUT VALUE IS LESS THAN INTEGER.MAX_VALUE BEFORE ACCEPTING AS INT
             int repetition = Integer.parseInt(repetitionCount.getText().toString().trim());
 
             if (repetition > Integer.MAX_VALUE) {
@@ -51,7 +73,11 @@ public class MainActivity extends AppCompatActivity {
                 time.setText("WORKING NOW...");
                 result.setText("WORKING NOW...");
 
-                command = "cd docker/sandbox/; ./run-calculate-sha1.sh " + repetition;
+                if (simulation.equals("CalculateSHA1")) {
+                    command = "cd docker/sandbox/; ./run-calculate-sha1.sh " + repetition;
+                } else if (simulation.equals("EstimatePi")) {
+                    command = "cd docker/sandbox/; ./run-estimate-pi.sh " + repetition;
+                }
 
                 startTime = System.nanoTime();
                 new PostTask().execute();
@@ -60,9 +86,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class PostTask extends AsyncTask<Void, Void, String> {
-
-        protected void onPreExecute() {
-        }
 
         @Override
         protected String doInBackground(Void... params) {
