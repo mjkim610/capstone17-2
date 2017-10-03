@@ -24,7 +24,7 @@ public class Main {
 
         Random random = new Random();
         int r = random.nextInt((int)Math.sqrt(Integer.MAX_VALUE));
-        int n = 500000;
+        int n = Integer.parseInt(args[0]);
 
         long startTime = System.nanoTime();
 

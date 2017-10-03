@@ -2,15 +2,18 @@ package com.capstone.montecarlopiandroid;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import java.lang.Math;
 import java.util.Random;
 
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
 public class MainActivity extends AppCompatActivity {
     private TextView time;
     private TextView result;
+    private EditText repetitionCount;
 
     public static double estimatePi(int r, int n) {
         double x;
@@ -36,28 +39,37 @@ public class MainActivity extends AppCompatActivity {
 
         time = (TextView) findViewById(R.id.textView1);
         result = (TextView) findViewById(R.id.textView2);
+        repetitionCount = (EditText)findViewById(R.id.number1);
     }
 
     public void onBeginClick(View view) {
-        time.setText("WORKING...");
-        result.setText("WORKING...");
+        if (repetitionCount.getText().toString().trim().isEmpty()) {
+            result.setText("Please specify the number of repetition");
+        } else {
+            int repetition = Integer.parseInt(repetitionCount.getText().toString().trim());
 
-        Random random = new Random();
-        int radius = random.nextInt((int)Math.sqrt(Integer.MAX_VALUE));
-        String output = "";
+            if (repetition > Integer.MAX_VALUE) {
+                result.setText("Please choose a value less than " + Integer.MAX_VALUE);
+            } else {
+                time.setText("WORKING...");
+                result.setText("WORKING...");
 
-        output = output + "Program argument (r): ";
-        output = output + radius + "\n";
+                Random random = new Random();
+                int radius = random.nextInt((int)Math.sqrt(Integer.MAX_VALUE));
+                String output = "";
 
-        int n = 500000;
+                output = output + "Program argument (r): ";
+                output = output + radius + "\n";
 
-        long startTime = System.nanoTime();
+                long startTime = System.nanoTime();
 
-        double piEstimate = estimatePi(radius, n);
-        output = output + "Pi Estimate: " + piEstimate + "\n";
+                double piEstimate = estimatePi(radius, repetition);
+                output = output + "Pi Estimate: " + piEstimate + "\n";
 
-        long duration = System.nanoTime() - startTime;
-        time.setText(Long.toString(duration));
-        result.setText(output);
+                long duration = System.nanoTime() - startTime;
+                time.setText(Long.toString(duration));
+                result.setText(output);
+            }
+        }
     }
 }
