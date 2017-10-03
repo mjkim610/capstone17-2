@@ -15,36 +15,53 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.ChannelExec;
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private TextView time;
     private TextView result;
-    private String output = "";
+    private EditText repetitionCount;
     private long startTime;
+
+    private String command;
+    private String output = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        repetitionCount = (EditText)findViewById(R.id.number1);
+
+        time = (TextView) findViewById(R.id.textView1);
         result = (TextView) findViewById(R.id.textView2);
         result.setText("RESULTS ARE SHOWN HERE");
     }
 
     public void onBeginClick(View view) {
-        startTime = System.nanoTime();
-        new PostTask().execute();
+        if (repetitionCount.getText().toString().trim().isEmpty()) {
+            result.setText("Please specify the number of repetition");
+        } else {
+            int repetition = Integer.parseInt(repetitionCount.getText().toString().trim());
+
+            if (repetition > Integer.MAX_VALUE) {
+                result.setText("Please choose a value less than " + Integer.MAX_VALUE);
+            } else {
+                time.setText("WORKING NOW...");
+                result.setText("WORKING NOW...");
+
+                command = "cd docker/sandbox/; ./run-calculate-sha1.sh " + repetition;
+
+                startTime = System.nanoTime();
+                new PostTask().execute();
+            }
+        }
     }
 
     private class PostTask extends AsyncTask<Void, Void, String> {
-        private String command = "cd docker/sandbox/; ./run-calculate-sha1.sh";
 
         protected void onPreExecute() {
-            time = (TextView) findViewById(R.id.textView1);
-            result = (TextView) findViewById(R.id.textView2);
-            time.setText("WORKING NOW...");
-            result.setText("WORKING NOW...");
         }
 
         @Override

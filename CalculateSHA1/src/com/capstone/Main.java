@@ -44,7 +44,9 @@ public class Main {
         long startTime = System.nanoTime();
         String hashValue = "error";
 
-        for (Integer i = 0; i<50000; i++) {
+        int repetition = Integer.parseInt(args[0]);
+
+        for (Integer i = 0; i<repetition; i++) {
             hashValue = computeSHAHash(generateRandomString(CHARSLIST));
         }
         long duration = System.nanoTime() - startTime;

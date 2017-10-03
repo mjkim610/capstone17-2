@@ -28,6 +28,17 @@
         android:id="@+id/textView2"
         android:layout_weight="1"
         android:text="" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title3"
+        android:textSize="20dp"
+        android:text="Repetition Count" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/number1"
+        android:inputType="number" />
     <Button
         android:id="@+id/btn1"
         android:layout_width="match_parent"
