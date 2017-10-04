@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">ControllerDocker</string>
     <string-array name="simulationArray">
-        <item>CalculateSHA1</item>
+        <item>CalculateSha1</item>
         <item>EstimatePi</item>
+    </string-array>
+    <string-array name="serverArray">
+        <item>AWS - Seoul Region</item>
+        <item>Cloudlet - High-end</item>
+        <item>Cloudlet - Mid-end</item>
     </string-array>
 </resources>

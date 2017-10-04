@@ -26,11 +26,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView time;
     private TextView result;
     private EditText repetitionCount;
-    private Spinner spinner;
+    private Spinner serverSpinner;
+    private Spinner simulSpinner;
 
     private long startTime;
 
-    private String simulation = "CalculateSHA1";
+    private String username, password, hostname;
+    private int port = 22;
+
+    private String server = "AWS - Seoul Region";
+    private String simulation = "CalculateSha1";
     private String command;
     private String output = "";
 
@@ -46,15 +51,29 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         result = (TextView) findViewById(R.id.textView2);
         result.setText("RESULTS ARE SHOWN HERE");
 
-        spinner = (Spinner) findViewById(R.id.spinner1);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.simulationArray, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        serverSpinner = (Spinner) findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> serverAdapter = ArrayAdapter.createFromResource(this, R.array.serverArray, android.R.layout.simple_spinner_item);
+        serverAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        serverSpinner.setAdapter(serverAdapter);
+        serverSpinner.setOnItemSelectedListener(this);
+        simulSpinner = (Spinner) findViewById(R.id.spinner2);
+        ArrayAdapter<CharSequence> simulAdapter = ArrayAdapter.createFromResource(this, R.array.simulationArray, android.R.layout.simple_spinner_item);
+        simulAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        simulSpinner.setAdapter(simulAdapter);
+        simulSpinner.setOnItemSelectedListener(this);
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        simulation = parent.getItemAtPosition(pos).toString();
+        switch(parent.getId()) {
+            case R.id.spinner1:
+                server = parent.getSelectedItem().toString();
+                break;
+            case R.id.spinner2:
+                simulation = parent.getSelectedItem().toString();
+                break;
+            default:
+                break;
+        }
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
@@ -73,10 +92,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 time.setText("WORKING NOW...");
                 result.setText("WORKING NOW...");
 
-                if (simulation.equals("CalculateSHA1")) {
+                if (simulation.equals("CalculateSha1")) {
                     command = "cd docker/sandbox/; ./run-calculate-sha1.sh " + repetition;
                 } else if (simulation.equals("EstimatePi")) {
                     command = "cd docker/sandbox/; ./run-estimate-pi.sh " + repetition;
+                }
+
+                // FILL IN SERVER INFO
+                if (server.equals("AWS - Seoul Region")) {
+                    username = "";
+                    password = "";
+                    hostname = "";
+                    port = 22;
+                } else if (server.equals("Cloudlet - High-end")) {
+                    username = "";
+                    password = "";
+                    hostname = "";
+                    port = 22;
+                } else if (server.equals("Cloudlet - Mid-end")) {
+                    username = "";
+                    password = "";
+                    hostname = "";
+                    port = 22;
                 }
 
                 startTime = System.nanoTime();
@@ -90,17 +127,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         protected String doInBackground(Void... params) {
 
-            // FILL IN SERVER INFO
-            String username = "username";
-            String password = "password";
-            String hostname = "hostname";
-            int port = 22;
-
             Log.d("OUTPUT", "inside doInBackground...");
+            Log.d("OUTPUT", "username: " + username);
             try {
-                if (username.equals("username")) {
-                    Log.d("OUTPUT", "FILL IN SERVER INFO...");
-                }
                 output = executeRemoteCommand(username, password, hostname, port);
             } catch (Exception e) {
                 e.printStackTrace();
