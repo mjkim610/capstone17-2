@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.os.AsyncTask;
 
+import java.text.NumberFormat;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String username, password, hostname;
     private int port = 22;
 
-    private String server = "AWS - Seoul Region";
+    private String server = "AWS - N.Virginia Region";
     private String simulation = "CalculateSha1";
     private String command;
     private String output = "";
@@ -99,7 +100,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
 
                 // FILL IN SERVER INFO
-                if (server.equals("AWS - Seoul Region")) {
+                if (server.equals("AWS - N.Virginia Region")) {
+                    username = "";
+                    password = "";
+                    hostname = "";
+                    port = 22;
+                } else if (server.equals("AWS - Seoul Region")) {
                     username = "";
                     password = "";
                     hostname = "";
@@ -144,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             long duration = System.nanoTime() - startTime;
             time = (TextView) findViewById(R.id.textView1);
-            time.setText(Long.toString(duration));
+            time.setText(NumberFormat.getNumberInstance().format(duration));
         }
 
         private String executeRemoteCommand(String username, String password, String hostname, int port) throws Exception {
