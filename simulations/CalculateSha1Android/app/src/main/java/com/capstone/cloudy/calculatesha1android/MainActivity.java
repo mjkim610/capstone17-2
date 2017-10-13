@@ -3,6 +3,7 @@ package com.capstone.cloudy.calculatesha1android;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import java.text.NumberFormat;
 import java.util.Random;
 import android.util.Base64;
 import java.io.UnsupportedEncodingException;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     computeSHAHash(generateRandomString(CHARSLIST));
                 }
                 long duration = System.nanoTime() - startTime;
-                time.setText(Long.toString(duration));
+                time.setText(NumberFormat.getNumberInstance().format(duration));
                 String output = "Repetition: " + repetition + "\n" + "SHA-1 hash: " + " " + hashValue;
                 result.setText(output);
             }

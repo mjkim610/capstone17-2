@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import java.lang.Math;
+import java.text.NumberFormat;
 import java.util.Random;
 
 import android.view.View;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 output = output + "Pi Estimate: " + piEstimate + "\n";
 
                 long duration = System.nanoTime() - startTime;
-                time.setText(Long.toString(duration));
+                time.setText(NumberFormat.getNumberInstance().format(duration));
                 result.setText(output);
             }
         }
