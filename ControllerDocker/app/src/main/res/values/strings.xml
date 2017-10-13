@@ -2,6 +2,7 @@
     <string name="app_name">ControllerDocker</string>
     <string-array name="simulationArray">
         <item>CalculateSha1</item>
+        <item>CalculateFibonacci</item>
         <item>EstimatePi</item>
     </string-array>
     <string-array name="serverArray">

@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 if (simulation.equals("CalculateSha1")) {
                     command = "cd docker/sandbox/; ./run-calculate-sha1.sh " + repetition;
+                } else if (simulation.equals("CalculateFibonacci")) {
+                    command = "cd docker/sandbox/; ./run-calculate-fibonacci.sh " + repetition;
                 } else if (simulation.equals("EstimatePi")) {
                     command = "cd docker/sandbox/; ./run-estimate-pi.sh " + repetition;
                 }
