@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 for (Integer i = 0; i<repetition; i++) {
                     computeSHAHash(generateRandomString(CHARSLIST));
                 }
+
                 long duration = System.nanoTime() - startTime;
                 time.setText(NumberFormat.getNumberInstance().format(duration));
                 String output = "Repetition: " + repetition + "\n" + "SHA-1 hash: " + " " + hashValue;

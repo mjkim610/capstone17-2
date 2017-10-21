@@ -12,6 +12,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 
+import com.capstone.controllerdocker.SntpClient.*;
+import android.os.SystemClock;
+import java.util.Date;
+
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.ChannelExec;
@@ -24,13 +28,16 @@ import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private TextView time;
+    private TextView startTimeTV;
+    private TextView endTimeTV;
     private TextView result;
     private EditText repetitionCount;
     private Spinner serverSpinner;
     private Spinner simulSpinner;
 
+    private long ntpDiff;
     private long startTime;
+    private long endTime;
 
     private String username, password, hostname;
     private int port = 22;
@@ -40,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String command;
     private String output = "";
 
+    private Date current;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         repetitionCount = (EditText)findViewById(R.id.number1);
 
-        time = (TextView) findViewById(R.id.textView1);
+        startTimeTV = (TextView) findViewById(R.id.timeTextView1);
+        endTimeTV = (TextView) findViewById(R.id.timeTextView2);
 
         result = (TextView) findViewById(R.id.textView2);
         result.setText("RESULTS ARE SHOWN HERE");
@@ -62,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         simulAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         simulSpinner.setAdapter(simulAdapter);
         simulSpinner.setOnItemSelectedListener(this);
+
+        new GetNtpTimeTask().execute();
+
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -81,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void onBeginClick(View view) {
+
         if (repetitionCount.getText().toString().trim().isEmpty()) {
             result.setText("Please specify the number of repetition");
         } else {
@@ -90,7 +104,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if (repetition > Integer.MAX_VALUE) {
                 result.setText("Please choose a value less than " + Integer.MAX_VALUE);
             } else {
-                time.setText("WORKING NOW...");
+                startTimeTV.setText("WORKING NOW...");
+                endTimeTV.setText("WORKING NOW...");
                 result.setText("WORKING NOW...");
 
                 if (simulation.equals("CalculateSha1")) {
@@ -124,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     port = 22;
                 }
 
-                startTime = System.nanoTime();
+                startTime = System.currentTimeMillis();
                 new PostTask().execute();
             }
         }
@@ -135,8 +150,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         protected String doInBackground(Void... params) {
 
-            Log.d("OUTPUT", "inside doInBackground...");
-            Log.d("OUTPUT", "username: " + username);
             try {
                 output = executeRemoteCommand(username, password, hostname, port);
             } catch (Exception e) {
@@ -146,17 +159,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         protected void onPostExecute(String output) {
-            Log.d("OUTPUT", "inside onPostExecute...");
+
             result = (TextView) findViewById(R.id.textView2);
             result.setText(output);
 
-            long duration = System.nanoTime() - startTime;
-            time = (TextView) findViewById(R.id.textView1);
-            time.setText(NumberFormat.getNumberInstance().format(duration));
+            endTime = System.currentTimeMillis();
+            startTimeTV.setText(""+(startTime+ntpDiff));
+            endTimeTV.setText(""+(endTime+ntpDiff));
+
         }
 
         private String executeRemoteCommand(String username, String password, String hostname, int port) throws Exception {
-            Log.d("OUTPUT", "inside executeRemoteCommand...");
 
             JSch jsch = new JSch();
             Session session = jsch.getSession(username, hostname, port);
@@ -188,6 +201,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             channelssh.disconnect();
 
             return stringBuilder.toString();
+        }
+    }
+
+    private class GetNtpTimeTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            SntpClient client = new SntpClient();
+            if (client.requestTime("time.nist.gov", 1000000000)) {
+                long now = client.getNtpTime() + SystemClock.elapsedRealtime() - client.getNtpTimeReference();
+                current = new Date(now);
+            }
+            return ""+current;
+        }
+
+        protected void onPostExecute(String output) {
+
+            Log.i("NTP tag", ""+current.getTime());
+            Log.d("NTP diff", "" + (current.getTime() - System.currentTimeMillis()));
+            ntpDiff = current.getTime() - System.currentTimeMillis();
+
         }
     }
 }

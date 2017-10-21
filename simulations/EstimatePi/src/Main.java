@@ -20,19 +20,18 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String output = "";
+
+        long startTime = System.currentTimeMillis();
 
         Random random = new Random();
         int r = random.nextInt((int)Math.sqrt(Integer.MAX_VALUE));
         int n = Integer.parseInt(args[0]);
 
-        long startTime = System.nanoTime();
-
         double piEstimate = estimatePi(r, n);
-        output = output + "Pi Estimate: " + piEstimate + "\n";
+        String estimate = "" + piEstimate;
 
-        long duration = System.nanoTime() - startTime;
-        output = output + "Duration: " + duration;
+        long endTime = System.currentTimeMillis();
+        String output = "Pi estimate:\t" + estimate + "\nStart time:\t" + startTime + "\nEnd time:\t" + endTime;
 
         System.out.println(output);
     }

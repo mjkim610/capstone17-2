@@ -41,7 +41,7 @@ public class Main {
 
     private static void begin(String[] args) {
 
-        long startTime = System.nanoTime();
+        long startTime = System.currentTimeMillis();
         String hashValue = "error";
 
         int repetition = Integer.parseInt(args[0]);
@@ -49,8 +49,8 @@ public class Main {
         for (Integer i = 0; i<repetition; i++) {
             hashValue = computeSHAHash(generateRandomString(CHARSLIST));
         }
-        long duration = System.nanoTime() - startTime;
-        String output = "SHA-1 hash: " + hashValue + "\nTime Taken: " + duration;
+        long endTime = System.currentTimeMillis();
+        String output = "SHA-1 hash:\t" + hashValue + "\nStart time:\t" + startTime + "\nEnd time:\t" + endTime;
         System.out.println(output);
     }
 

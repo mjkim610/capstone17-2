@@ -14,14 +14,13 @@ public class Main {
 
     private static void begin(String[] args) {
 
-        long startTime = System.nanoTime();
-        String hashValue = "error";
+        long startTime = System.currentTimeMillis();
 
         int n = Integer.parseInt(args[0]);
 
         String solution = NumberFormat.getNumberInstance().format(recursiveFib(n));
-        long duration = System.nanoTime() - startTime;
-        String output = "Solution: " + solution + "\n" + "Time Taken: " + " " + duration;
+        long endTime = System.currentTimeMillis();
+        String output = "Solution:\t" + solution + "\nStart time:\t" + startTime + "\nEnd time:\t" + endTime;
         System.out.println(output);
     }
 
