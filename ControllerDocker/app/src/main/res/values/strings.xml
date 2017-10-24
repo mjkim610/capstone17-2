@@ -6,8 +6,11 @@
         <item>EstimatePi</item>
     </string-array>
     <string-array name="serverArray">
-        <item>AWS - N.Virginia Region</item>
-        <item>AWS - Seoul Region</item>
+        <item>AWS - N.Virginia</item>
+        <item>AWS - Oregon</item>
+        <item>AWS - London</item>
+        <item>AWS - Mumbai</item>
+        <item>AWS - Seoul</item>
         <item>Cloudlet - High-end</item>
         <item>Cloudlet - Mid-end</item>
     </string-array>

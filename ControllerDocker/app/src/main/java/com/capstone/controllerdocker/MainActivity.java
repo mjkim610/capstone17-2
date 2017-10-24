@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.os.AsyncTask;
 
-import java.text.NumberFormat;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 
-import com.capstone.controllerdocker.SntpClient.*;
 import android.os.SystemClock;
 import java.util.Date;
 
@@ -42,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String username, password, hostname;
     private int port = 22;
 
-    private String server = "AWS - N.Virginia Region";
+    private String server = "AWS - N.Virginia";
     private String simulation = "CalculateSha1";
     private String command;
     private String output = "";
@@ -117,12 +115,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
 
                 // FILL IN SERVER INFO
-                if (server.equals("AWS - N.Virginia Region")) {
+                if (server.equals("AWS - N.Virginia")) {
                     username = "";
                     password = "";
                     hostname = "";
                     port = 22;
-                } else if (server.equals("AWS - Seoul Region")) {
+                } else if (server.equals("AWS - Oregon")) {
+                    username = "";
+                    password = "";
+                    hostname = "";
+                    port = 22;
+                } else if (server.equals("AWS - London")) {
+                    username = "";
+                    password = "";
+                    hostname = "";
+                    port = 22;
+                } else if (server.equals("AWS - Mumbai")) {
+                    username = "";
+                    password = "";
+                    hostname = "";
+                    port = 22;
+                } else if (server.equals("AWS - Seoul")) {
                     username = "";
                     password = "";
                     hostname = "";
