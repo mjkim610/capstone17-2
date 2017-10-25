@@ -50,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
 
             // FILL IN SERVER INFO
-            String username = "username";
-            String password = "password";
-            String hostname = "hostname";
-            int port = 22;
+            String username = "";
+            String password = "";
+            String hostname = "";
+            int port = 0;
 
             Log.d("OUTPUT", "inside doInBackground...");
             try {

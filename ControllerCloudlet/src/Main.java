@@ -9,10 +9,10 @@ import com.jcraft.jsch.ChannelExec;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String username = "capstone";
-        String password = "sojong1234";
-        String hostname = "localhost";
-        int port = 2222;
+        String username = "";
+        String password = "";
+        String hostname = "";
+        int port = 0;
 
         String command = "cd capstone17-2/CalculateSHA1/src/; javac com/capstone/Main.java; java -classpath . com.capstone.Main \"The quick brown fox jumps over the lazy dog.\"";
 

@@ -17,7 +17,7 @@ public class Main {
         return res.toString();
     }
 
-    private static String computeSHAHash(String password) {
+    private static String computeSHAHash(String input) {
         MessageDigest mdSha1 = null;
         try {
             mdSha1 = MessageDigest.getInstance("SHA-1");
@@ -25,7 +25,7 @@ public class Main {
             System.out.println("Error initializing SHA1");
         }
         try {
-            mdSha1.update(password.getBytes("ASCII"));
+            mdSha1.update(input.getBytes("ASCII"));
         } catch (UnsupportedEncodingException e) {
             System.out.println("Unsupported Encoding Exception");
         }

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         return res.toString();
     }
 
-    public void computeSHAHash(String password)
+    public void computeSHAHash(String input)
     {
 
         MessageDigest mdSha1 = null;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Benchmark", "Error initializing SHA1");
         }
         try {
-            mdSha1.update(password.getBytes("ASCII"));
+            mdSha1.update(input.getBytes("ASCII"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

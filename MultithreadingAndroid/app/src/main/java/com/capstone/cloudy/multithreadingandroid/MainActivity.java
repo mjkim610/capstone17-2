@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private String username;
     private String password;
     private String hostname;
-    private int port = 22;
+    private int port = 0;
 
     private String command;
     private int repetition;
@@ -60,29 +60,29 @@ public class MainActivity extends AppCompatActivity {
         command = "cd docker/sandbox/; ./run-calculate-sha1.sh " + repetition;
 
         // CHECK THAT EACH THREAD IS ACTUALLY SENDING TO THE SPECIFIED SERVERS
-        username = "FILL IN HERE";
-        password = "FILL IN HERE";
-        hostname = "FILL IN HERE";
+        username = "";
+        password = "";
+        hostname = "";
         pool.execute(new NetworkService(1));
 
-        username = "FILL IN HERE";
-        password = "FILL IN HERE";
-        hostname = "FILL IN HERE";
+        username = "";
+        password = "";
+        hostname = "";
         pool.execute(new NetworkService(2));
 
-        username = "FILL IN HERE";
-        password = "FILL IN HERE";
-        hostname = "FILL IN HERE";
+        username = "";
+        password = "";
+        hostname = "";
         pool.execute(new NetworkService(3));
 
-        username = "FILL IN HERE";
-        password = "FILL IN HERE";
-        hostname = "FILL IN HERE";
+        username = "";
+        password = "";
+        hostname = "";
         pool.execute(new NetworkService(4));
 
-        username = "FILL IN HERE";
-        password = "FILL IN HERE";
-        hostname = "FILL IN HERE";
+        username = "";
+        password = "";
+        hostname = "";
         pool.execute(new NetworkService(5));
     }
 
