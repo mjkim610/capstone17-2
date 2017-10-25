@@ -45,12 +45,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String command;
     private String output = "";
 
+    private String[] usernames;
+    private String[] passwords;
+    private String[] hostnames;
+    private int[] ports;
+
     private Date current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        usernames = getResources().getStringArray(R.array.usernames);
+        passwords = getResources().getStringArray(R.array.passwords);
+        hostnames = getResources().getStringArray(R.array.hostnames);
+        ports = getResources().getIntArray(R.array.ports);
 
         repetitionCount = (EditText)findViewById(R.id.number1);
 
@@ -114,43 +124,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     command = "docker run mjkim610/capstone-estimate-pi " + repetition;
                 }
 
-                // FILL IN SERVER INFO
+                int arrayIndex = 0;
                 if (server.equals("AWS - N.Virginia")) {
-                    username = "";
-                    password = "";
-                    hostname = "";
-                    port = 22;
+                    arrayIndex = 0;
                 } else if (server.equals("AWS - Oregon")) {
-                    username = "";
-                    password = "";
-                    hostname = "";
-                    port = 22;
+                    arrayIndex = 1;
                 } else if (server.equals("AWS - London")) {
-                    username = "";
-                    password = "";
-                    hostname = "";
-                    port = 22;
+                    arrayIndex = 2;
                 } else if (server.equals("AWS - Mumbai")) {
-                    username = "";
-                    password = "";
-                    hostname = "";
-                    port = 22;
+                    arrayIndex = 3;
                 } else if (server.equals("AWS - Seoul")) {
-                    username = "";
-                    password = "";
-                    hostname = "";
-                    port = 22;
+                    arrayIndex = 4;
                 } else if (server.equals("Cloudlet - High-end")) {
-                    username = "";
-                    password = "";
-                    hostname = "";
-                    port = 22;
+                    arrayIndex = 5;
                 } else if (server.equals("Cloudlet - Mid-end")) {
-                    username = "";
-                    password = "";
-                    hostname = "";
-                    port = 22;
+                    arrayIndex = 6;
                 }
+
+                username = usernames[arrayIndex];
+                password = passwords[arrayIndex];
+                hostname = hostnames[arrayIndex];
+                port = ports[arrayIndex];
 
                 startTime = System.currentTimeMillis();
                 new PostTask().execute();

@@ -1,5 +1,6 @@
 # Secrets
 resources/secrets.txt
+*secrets.xml
 
 # macOS
 *.DS_Store
