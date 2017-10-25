@@ -107,11 +107,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 result.setText("WORKING NOW...");
 
                 if (simulation.equals("CalculateSha1")) {
-                    command = "cd docker/sandbox/; ./run-calculate-sha1.sh " + repetition;
+                    command = "docker run mjkim610/capstone-calculate-sha1 " + repetition;
                 } else if (simulation.equals("CalculateFibonacci")) {
-                    command = "cd docker/sandbox/; ./run-calculate-fibonacci.sh " + repetition;
+                    command = "docker run mjkim610/capstone-calculate-fibonacci " + repetition;
                 } else if (simulation.equals("EstimatePi")) {
-                    command = "cd docker/sandbox/; ./run-estimate-pi.sh " + repetition;
+                    command = "docker run mjkim610/capstone-estimate-pi " + repetition;
                 }
 
                 // FILL IN SERVER INFO
