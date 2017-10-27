@@ -80,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
                 time.setText("WORKING...");
                 result.setText("WORKING...");
 
-                long startTime = System.nanoTime();
+                long startTime = System.currentTimeMillis();
                 for (Integer i = 0; i<repetition; i++) {
                     computeSHAHash(generateRandomString(CHARSLIST));
                 }
 
-                long duration = System.nanoTime() - startTime;
+                long duration = System.currentTimeMillis() - startTime;
                 time.setText(NumberFormat.getNumberInstance().format(duration));
                 String output = "Repetition: " + repetition + "\n" + "SHA-1 hash: " + " " + hashValue;
                 result.setText(output);

@@ -62,12 +62,12 @@ public class MainActivity extends AppCompatActivity {
                 output = output + "Program argument (r): ";
                 output = output + radius + "\n";
 
-                long startTime = System.nanoTime();
+                long startTime = System.currentTimeMillis();
 
                 double piEstimate = estimatePi(radius, repetition);
                 output = output + "Pi Estimate: " + piEstimate + "\n";
 
-                long duration = System.nanoTime() - startTime;
+                long duration = System.currentTimeMillis() - startTime;
                 time.setText(NumberFormat.getNumberInstance().format(duration));
                 result.setText(output);
             }

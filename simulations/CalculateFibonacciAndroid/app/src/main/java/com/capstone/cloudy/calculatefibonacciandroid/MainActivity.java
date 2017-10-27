@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
                 time.setText("WORKING...");
                 result.setText("WORKING...");
 
-                long startTime = System.nanoTime();
+                long startTime = System.currentTimeMillis();
                 solution = NumberFormat.getNumberInstance().format(recursiveFib(n));
-                long duration = System.nanoTime() - startTime;
+                long duration = System.currentTimeMillis() - startTime;
                 time.setText(NumberFormat.getNumberInstance().format(duration));
                 String output = "N: " + n + "\n" + "Solution: " + " " + solution;
                 result.setText(output);
