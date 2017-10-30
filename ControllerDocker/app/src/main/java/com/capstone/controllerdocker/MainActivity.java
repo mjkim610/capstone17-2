@@ -1,11 +1,20 @@
 package com.capstone.controllerdocker;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Environment;
 
 import android.util.Log;
 import android.os.AsyncTask;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.Properties;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,6 +35,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+
+    private String fileOutput = "";
+    private int counter = 0;
+
     private TextView startTimeTV;
     private TextView endTimeTV;
     private TextView result;
@@ -54,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -102,16 +118,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void onBeginClick(View view) {
-
         if (repetitionCount.getText().toString().trim().isEmpty()) {
             result.setText("Please specify the number of repetition");
         } else {
             // MUST CHECK THAT INPUT VALUE IS LESS THAN INTEGER.MAX_VALUE BEFORE ACCEPTING AS INT
             int repetition = Integer.parseInt(repetitionCount.getText().toString().trim());
 
-            if (repetition > Integer.MAX_VALUE) {
-                result.setText("Please choose a value less than " + Integer.MAX_VALUE);
-            } else {
+            if (repetition < Integer.MAX_VALUE) {
                 startTimeTV.setText("WORKING NOW...");
                 endTimeTV.setText("WORKING NOW...");
                 result.setText("WORKING NOW...");
@@ -146,9 +159,61 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 hostname = hostnames[arrayIndex];
                 port = ports[arrayIndex];
 
-                startTime = System.currentTimeMillis();
-                new PostTask().execute();
+                for (int i=0; i<10; i++) {
+                    new PostTask().execute();
+                }
+
+            } else {
+                result.setText("Please choose a value less than " + Integer.MAX_VALUE);
             }
+        }
+    }
+
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void getPermission() {
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+        }
+    }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    // Perform write-external-storage related task
+//                } else {
+//                    // Perform task for when permission is denied.
+//                }
+//                return;
+//            }
+//        }
+//    }
+
+    public void saveToFile() {
+        getPermission();
+
+        File file;
+        FileOutputStream outputStream;
+        try {
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), ""+Calendar.getInstance().getTime()+".txt");
+
+            outputStream = new FileOutputStream(file);
+            outputStream.write(fileOutput.getBytes());
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -166,17 +231,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         protected void onPostExecute(String output) {
+            counter++;
 
             result = (TextView) findViewById(R.id.textView2);
-            result.setText(output);
-
+            result.setText("Counter: " + counter + "\n" + output);
             endTime = System.currentTimeMillis();
             startTimeTV.setText(""+(startTime+ntpDiff));
             endTimeTV.setText(""+(endTime+ntpDiff));
 
+            fileOutput += "Request sent: " + (startTime+ntpDiff) + "\n";
+            fileOutput += "Response received: " + (endTime+ntpDiff) + "\n";
+            fileOutput += "Counter: " + counter + "\n" + output;
+            fileOutput += "===\n";
+
+            if (counter >= 10) {
+                if (isExternalStorageWritable()) {
+                    saveToFile();
+                    result.setText(result.getText() + "\nDONE!");
+                } else {
+                    Log.e("W", "Storage not writable");
+                }
+            }
+
         }
 
         private String executeRemoteCommand(String username, String password, String hostname, int port) throws Exception {
+            startTime = System.currentTimeMillis();
 
             JSch jsch = new JSch();
             Session session = jsch.getSession(username, hostname, port);
