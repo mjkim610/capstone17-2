@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">MultithreadingAndroid</string>
+    <string-array name="simulationArray">
+        <item>CalculateSha1</item>
+        <item>CalculateFibonacci</item>
+        <item>EstimatePi</item>
+    </string-array>
+    <string-array name="serverArray">
+        <item>AWS - N.Virginia</item>
+        <item>AWS - Oregon</item>
+        <item>AWS - London</item>
+        <item>AWS - Mumbai</item>
+        <item>AWS - Seoul</item>
+        <item>Cloudlet - High-end</item>
+        <item>Cloudlet - Mid-end</item>
+    </string-array>
 </resources>

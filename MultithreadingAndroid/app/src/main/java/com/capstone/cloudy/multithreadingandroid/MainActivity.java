@@ -3,173 +3,165 @@ package com.capstone.cloudy.multithreadingandroid;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
-import com.jcraft.jsch.ChannelExec;
-
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
+import android.os.AsyncTask;
+
+import android.os.SystemClock;
+import java.util.Date;
+import java.util.Random;
+
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+//public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 public class MainActivity extends AppCompatActivity {
 
-    private String username;
-    private String password;
-    private String hostname;
-    private int port = 0;
+    private TextView startTimeTV;
+    private TextView endTimeTV;
+    public static TextView[] connTVs = new TextView[5];
 
-    private String command;
-    private int repetition;
-    private String output;
+    public static long ntpDiff;
 
-    private TextView conn1;
-    private TextView conn2;
-    private TextView conn3;
-    private TextView conn4;
-    private TextView conn5;
+
+    public static String[] simulations = {"docker run mjkim610/capstone-calculate-sha1 ",
+                                            "docker run mjkim610/capstone-calculate-fibonacci ",
+                                            "docker run mjkim610/capstone-estimate-pi "};
+    public static String command;
+
+    public static String username, password, hostname;
+    public static int port;
+
+    private String[] usernames;
+    private String[] passwords;
+    private String[] hostnames;
+    private int[] ports;
 
     private ExecutorService pool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        conn1 = (TextView) findViewById(R.id.textView1);
-        conn2 = (TextView) findViewById(R.id.textView2);
-        conn3 = (TextView) findViewById(R.id.textView3);
-        conn4 = (TextView) findViewById(R.id.textView4);
-        conn5 = (TextView) findViewById(R.id.textView5);
+        connTVs[0] = (TextView) findViewById(R.id.connTV1);
+        connTVs[1] = (TextView) findViewById(R.id.connTV2);
+        connTVs[2] = (TextView) findViewById(R.id.connTV3);
+        connTVs[3] = (TextView) findViewById(R.id.connTV4);
+        connTVs[4] = (TextView) findViewById(R.id.connTV5);
 
-        // give pool 10 threads
+        usernames = getResources().getStringArray(R.array.usernames);
+        passwords = getResources().getStringArray(R.array.passwords);
+        hostnames = getResources().getStringArray(R.array.hostnames);
+        ports = getResources().getIntArray(R.array.ports);
+
+        startTimeTV = (TextView) findViewById(R.id.timeTV1);
+        endTimeTV = (TextView) findViewById(R.id.timeTV2);
+
+        for (int i=0; i<connTVs.length; i++) {
+            connTVs[i].setText("RESULTS ARE SHOWN HERE");
+        }
+
+        new GetNtpTimeTask().execute();
+
         pool = Executors.newFixedThreadPool(10);
+
     }
+
+//    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+//        switch(parent.getId()) {
+//            case R.id.simSpinner:
+//                simulation = parent.getSelectedItem().toString();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//
+//    public void onNothingSelected(AdapterView<?> parent) {
+//    }
+//
+//    public void onBeginClick(View view) {
+//        if (repCount.getText().toString().trim().isEmpty()) {
+//            result.setText("Please specify the number of repetition");
+//        } else {
+//            // MUST CHECK THAT INPUT VALUE IS LESS THAN INTEGER.MAX_VALUE BEFORE ACCEPTING AS INT
+//            int rep = Integer.parseInt(repCount.getText().toString().trim());
+//
+//            if (rep < Integer.MAX_VALUE) {
+//                startTimeTV.setText("WORKING NOW...");
+//                endTimeTV.setText("WORKING NOW...");
+//                result.setText("WORKING NOW...");
+//
+//
+//                createRandomJobs(10);
+//
+//            } else {
+//                result.setText("Please choose a value less than " + Integer.MAX_VALUE);
+//            }
+//        }
+//    }
 
     public void onBeginClick(View view) {
-        repetition = 10;
-        command = "cd docker/sandbox/; ./run-calculate-sha1.sh " + repetition;
 
-        // CHECK THAT EACH THREAD IS ACTUALLY SENDING TO THE SPECIFIED SERVERS
-        username = "";
-        password = "";
-        hostname = "";
-        pool.execute(new NetworkService(1));
-
-        username = "";
-        password = "";
-        hostname = "";
-        pool.execute(new NetworkService(2));
-
-        username = "";
-        password = "";
-        hostname = "";
-        pool.execute(new NetworkService(3));
-
-        username = "";
-        password = "";
-        hostname = "";
-        pool.execute(new NetworkService(4));
-
-        username = "";
-        password = "";
-        hostname = "";
-        pool.execute(new NetworkService(5));
+        createRandomJobs(10);
     }
 
-    private class NetworkService implements Runnable {
-        private Handler mHandler;
-        public NetworkService(final int i) {
-            mHandler = new Handler(Looper.getMainLooper()){
+    private void createRandomJobs(int jobCount) {
+        Random random = new Random();
 
-                @Override
-                public void handleMessage(Message inputMessage){
-                    String msg = (String) inputMessage.obj;
+        int[] workerIds = new int[jobCount];
+        String[] jobUsernames = new String[jobCount];
+        String[] jobPasswords = new String[jobCount];
+        String[] jobHostnames = new String[jobCount];
+        int[] jobPorts = new int[jobCount];
+        String[] jobCommands = new String[jobCount];
 
-                    switch(i) {
-                        case 1:
-                            conn1.setText(msg);
-                            break;
-                        case 2:
-                            conn2.setText(msg);
-                            break;
-                        case 3:
-                            conn3.setText(msg);
-                            break;
-                        case 4:
-                            conn4.setText(msg);
-                            break;
-                        case 5:
-                            conn5.setText(msg);
-                            break;
-                    }
-                }
-            };
+
+        for (int i=0; i<jobCount; i++) {
+            int workerId = random.nextInt(5);
+            int simId = random.nextInt(3);
+            int rep = random.nextInt(50);
+
+            workerIds[i] = workerId;
+            jobUsernames[i] = usernames[workerId];
+            jobPasswords[i] = passwords[workerId];
+            jobHostnames[i] = hostnames[workerId];
+            jobPorts[i] = ports[workerId];
+            jobCommands[i] = simulations[simId] + rep;
+
         }
+
+        for (int i=0; i<jobCount; i++) {
+            connTVs[workerIds[i]].setText("Working...");
+            pool.execute(new SshClient(i, workerIds[i], jobUsernames, jobPasswords, jobHostnames, jobPorts, jobCommands));
+        }
+    }
+
+    private class GetNtpTimeTask extends AsyncTask<Void, Void, String> {
+
+        private Date current;
 
         @Override
-        public void run() {
-            String recv = HttpRequest();
-            sendMessage(1, recv);
+        protected String doInBackground(Void... params) {
+
+            SntpClient client = new SntpClient();
+            if (client.requestTime("time.nist.gov", 1000000000)) {
+                long now = client.getNtpTime() + SystemClock.elapsedRealtime() - client.getNtpTimeReference();
+                current = new Date(now);
+            }
+            return ""+current;
         }
 
-        public void sendMessage(int what, String msg){
-            Message message = mHandler.obtainMessage(what, msg);
-            message.sendToTarget();
+        protected void onPostExecute(String output) {
+
+            Log.i("NTP tag", ""+current.getTime());
+            Log.d("NTP diff", "" + (current.getTime() - System.currentTimeMillis()));
+            ntpDiff = current.getTime() - System.currentTimeMillis();
+
         }
-
-    }
-
-    public String HttpRequest() {
-        try {
-            output = executeRemoteCommand(username, password, hostname, port);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return output;
-    }
-
-    private String executeRemoteCommand(String username, String password, String hostname, int port) throws Exception {
-        Log.d("OUTPUT", "inside executeRemoteCommand...");
-
-        JSch jsch = new JSch();
-        Session session = jsch.getSession(username, hostname, port);
-        session.setPassword(password);
-
-        // Avoid asking for key confirmation
-        Properties prop = new Properties();
-        prop.put("StrictHostKeyChecking", "no");
-
-        session.setConfig(prop);
-        session.setTimeout(10000);
-        session.connect();
-
-        // SSH Channel
-        ChannelExec channelssh = (ChannelExec) session.openChannel("exec");
-
-        InputStream inputStream = channelssh.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-
-        // Execute command
-        channelssh.setCommand(command);
-        channelssh.connect();
-        while ((line = bufferedReader.readLine()) != null) {
-            stringBuilder.append(line);
-            stringBuilder.append('\n');
-        }
-        channelssh.disconnect();
-
-        return stringBuilder.toString();
     }
 }
