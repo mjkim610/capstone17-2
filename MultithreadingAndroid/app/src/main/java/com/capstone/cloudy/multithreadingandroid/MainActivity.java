@@ -21,9 +21,9 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private TextView startTimeTV;
-    private TextView endTimeTV;
     public static TextView[] connTVs = new TextView[1];
+    public static TextView timeStartTV;
+    public static TextView timeEndTV;
 
     private Spinner algoSpinner;
     private String algorithm = "Round Robin";
@@ -53,14 +53,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         connTVs[0] = (TextView) findViewById(R.id.connTV1);
+        timeStartTV = (TextView) findViewById(R.id.timeTV1);
+        timeEndTV = (TextView) findViewById(R.id.timeTV2);
 
         usernames = getResources().getStringArray(R.array.usernames);
         passwords = getResources().getStringArray(R.array.passwords);
         hostnames = getResources().getStringArray(R.array.hostnames);
         ports = getResources().getIntArray(R.array.ports);
-
-        startTimeTV = (TextView) findViewById(R.id.timeTV1);
-        endTimeTV = (TextView) findViewById(R.id.timeTV2);
 
         for (int i=0; i<connTVs.length; i++) {
             connTVs[i].setText("RESULTS ARE SHOWN HERE");
@@ -115,6 +114,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void onBeginClick(View view) {
 
+        for (int i=0; i<connTVs.length; i++) {
+            connTVs[i].setText("");
+        }
         createRandomJobs(10);
     }
 
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         for (int i=0; i<jobCount; i++) {
-            connTVs[workerIds[i]].setText("Working...");
+//            connTVs[workerIds[i]].setText("Working...");
             pool.execute(new SshClient(i, workerIds[i], jobUsernames, jobPasswords, jobHostnames, jobPorts, jobCommands));
         }
     }

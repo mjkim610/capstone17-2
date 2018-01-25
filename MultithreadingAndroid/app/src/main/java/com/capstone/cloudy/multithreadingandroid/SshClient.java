@@ -42,24 +42,12 @@ public class SshClient implements Runnable {
                 // If I want to log the responses, do it using response
                 String response = (String) inputMessage.obj;
                 endTime = System.currentTimeMillis() + MainActivity.ntpDiff;
+                MainActivity.connTVs[0].append(response + "\nSend time: " + startTime + "\nReceive time: " + endTime + "\n");
 
-                switch(workerId) {
-                    case 0:
-                        MainActivity.connTVs[0].setText(response + "\nSend time: " + startTime + "\nReceive time: " + endTime);
-                        break;
-                    case 1:
-                        MainActivity.connTVs[1].setText(response + "\nSend time: " + startTime + "\nReceive time: " + endTime);
-                        break;
-                    case 2:
-                        MainActivity.connTVs[2].setText(response + "\nSend time: " + startTime + "\nReceive time: " + endTime);
-                        break;
-                    case 3:
-                        MainActivity.connTVs[3].setText(response + "\nSend time: " + startTime + "\nReceive time: " + endTime);
-                        break;
-                    case 4:
-                        MainActivity.connTVs[4].setText(response + "\nSend time: " + startTime + "\nReceive time: " + endTime);
-                        break;
+                if (MainActivity.timeStartTV.getText().toString().matches("")) {
+                    MainActivity.timeStartTV.setText("" + startTime);
                 }
+                MainActivity.timeEndTV.setText("" + endTime);
             }
         };
     }
