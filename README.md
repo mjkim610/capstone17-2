@@ -23,5 +23,8 @@ Cloudy uses 3 different techniques:
 ## Demo
 ![Cloudy Demo](/resources/demo.gif)
 
+## Presentation
+For more high-level explanation, check out the [presentation](/resources/presentation/presentation.pdf) and [paper](/resources/presentation/paper.pdf).
+
 ## License
 See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
