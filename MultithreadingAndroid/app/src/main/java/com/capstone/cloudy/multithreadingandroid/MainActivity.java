@@ -11,17 +11,22 @@ import java.util.Date;
 import java.util.Random;
 
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-//public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private TextView startTimeTV;
     private TextView endTimeTV;
-    public static TextView[] connTVs = new TextView[5];
+    public static TextView[] connTVs = new TextView[1];
+
+    private Spinner algoSpinner;
+    private String algorithm = "Round Robin";
 
     public static long ntpDiff;
 
@@ -48,10 +53,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         connTVs[0] = (TextView) findViewById(R.id.connTV1);
-        connTVs[1] = (TextView) findViewById(R.id.connTV2);
-        connTVs[2] = (TextView) findViewById(R.id.connTV3);
-        connTVs[3] = (TextView) findViewById(R.id.connTV4);
-        connTVs[4] = (TextView) findViewById(R.id.connTV5);
 
         usernames = getResources().getStringArray(R.array.usernames);
         passwords = getResources().getStringArray(R.array.passwords);
@@ -65,24 +66,31 @@ public class MainActivity extends AppCompatActivity {
             connTVs[i].setText("RESULTS ARE SHOWN HERE");
         }
 
+        algoSpinner = (Spinner) findViewById(R.id.algoSpinner);
+        ArrayAdapter<CharSequence> algoAdapter = ArrayAdapter.createFromResource(this, R.array.algoArray, android.R.layout.simple_spinner_item);
+        algoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        algoSpinner.setAdapter(algoAdapter);
+        algoSpinner.setOnItemSelectedListener(this);
+
+
         new GetNtpTimeTask().execute();
 
         pool = Executors.newFixedThreadPool(10);
 
     }
 
-//    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-//        switch(parent.getId()) {
-//            case R.id.simSpinner:
-//                simulation = parent.getSelectedItem().toString();
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-//
-//    public void onNothingSelected(AdapterView<?> parent) {
-//    }
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        switch(parent.getId()) {
+            case R.id.algoSpinner:
+                algorithm = parent.getSelectedItem().toString();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
 //
 //    public void onBeginClick(View view) {
 //        if (repCount.getText().toString().trim().isEmpty()) {

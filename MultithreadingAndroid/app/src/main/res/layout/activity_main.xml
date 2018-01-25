@@ -38,51 +38,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/connTitle1"
             android:textSize="20dp"
-            android:text="Connection 1" />
+            android:text="Job Output" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/connTV1"
             android:text="" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/connTitle2"
-            android:textSize="20dp"
-            android:text="Connection 2" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/connTV2"
-            android:text="" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/connTitle3"
-            android:textSize="20dp"
-            android:text="Connection 3" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/connTV3"
-            android:text="" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/connTitle4"
-            android:textSize="20dp"
-            android:text="Connection 4" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/connTV4"
-            android:text="" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/connTitle5"
-            android:textSize="20dp"
-            android:text="Connection 5" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -110,11 +72,40 @@
             <!--android:layout_height="wrap_content"-->
             <!--android:id="@+id/repNum"-->
             <!--android:inputType="number" />-->
+
+        <Switch
+            android:id="@+id/switchVirt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Toggle OS-level virtualization"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/simTitle"
+            android:textSize="20dp"
+            android:text="Algorithm type" />
+        <Spinner
+            android:id="@+id/algoSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/titleAlgo"
+            android:textSize="20dp"
+            android:text="Per-hop drop probability" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/repNum"
+            android:inputType="number" />
         <Button
             android:id="@+id/startBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create jobs"
+            android:text="Run jobs"
             android:onClick="onBeginClick" />
     </LinearLayout>
 </ScrollView>

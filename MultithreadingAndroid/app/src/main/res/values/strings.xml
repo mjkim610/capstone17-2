@@ -1,10 +1,15 @@
 <resources>
-    <string name="app_name">MultithreadingAndroid</string>
+    <string name="app_name">Cloudy</string>
     <string-array name="simulationArray">
         <item>CalculateSha1</item>
         <item>CalculateFibonacci</item>
         <item>EstimatePi</item>
     </string-array>
+    <string-array name="algoArray">
+    <item>Round Robin</item>
+    <item>Earliest Deadline First</item>
+    <item>Cloudy Custom</item>
+</string-array>
     <string-array name="serverArray">
         <item>AWS - N.Virginia</item>
         <item>AWS - Oregon</item>
